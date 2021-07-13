@@ -1,5 +1,9 @@
-from api.router import router, extra_urlpatterns
+from django.urls import path
 
-urlpatterns = []
+from api.router import router
+from api import views
+urlpatterns = [
+
+]
 urlpatterns += router.urls
-urlpatterns.extend(extra_urlpatterns)
+
