@@ -19,8 +19,6 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.37']
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,8 +35,12 @@ INSTALLED_APPS = [
     'corsheaders',
     'djoser',
 
-    'api'
+    'api',
+    'coins',
+
 ]
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
@@ -69,7 +71,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'rest.urls'
 
-
 ASGI_APPLICATION = 'rest.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
@@ -83,7 +84,7 @@ CHANNEL_LAYERS = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates',BASE_DIR / 'chat/templates']
+        'DIRS': [BASE_DIR / 'coins/templates', BASE_DIR / 'chat/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -103,14 +104,21 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     "NAME": env("NAME"),
+    #     'USER': env("USER"),
+    #     'PASSWORD': env("PASSWORD"),
+    #     'HOST': 'localhost',
+    #     'PORT': 5432,
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        "NAME": env("NAME"),
-        'USER': env("USER"),
-        'PASSWORD': env("PASSWORD"),
-        'HOST': 'localhost',
-        'PORT': 5432,
-    }
+        'ENGINE': 'django.db.backends.sqlite3',
+        "NAME": 'd',
+
+    },
+
 }
 
 # Password validation
@@ -161,7 +169,6 @@ WEBPACK_LOADER = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
